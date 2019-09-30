@@ -1,0 +1,8 @@
+apiVersion: skaffold/v1beta13
+kind: Config
+build:
+  artifacts:
+  - image: user-sql
+deploy:
+  kustomize:
+    path: ./test

@@ -1,0 +1,49 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: user-sql
+
+spec:
+  serviceName: user-sql
+
+  replicas: 1
+
+  template:
+    spec:
+      terminationGracePeriodSeconds: 10
+
+      containers:
+      - name: sql
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        ports:
+        - containerPort: 1433
+          name: sql
+
+        env:
+        - name: MSSQL_PID
+          value: "Developer"
+
+        - name: ACCEPT_EULA
+          value: "Y"
+
+        - name: MSSQL_SA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: user-sql
+              key: sa-password 
+
+        volumeMounts:
+        - name: user-sql-data
+          mountPath: /var/lib/fou/user-sql
+
+  volumeClaimTemplates:
+  - metadata:
+      name: user-sql-data
+
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+
+      resources:
+        requests:
+          storage: 1Gi

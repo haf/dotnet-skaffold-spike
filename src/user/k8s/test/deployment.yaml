@@ -1,0 +1,31 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: user
+
+spec:
+  replicas: 3
+
+  template:
+    spec:
+      containers:
+      - name: user
+        image: user:latest
+
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: USER_SQL_SERVER_PASSOWRD
+          valueFrom:
+            secretKeyRef:
+              key: sql-password
+              name: user
+
+        resources:
+          limits:
+            cpu: 4
+            memory: 2Gi
+          requests:
+            cpu: 200m
+            memory: 200Mi
