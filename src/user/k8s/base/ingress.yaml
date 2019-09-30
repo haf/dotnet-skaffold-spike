@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api
+
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+
+spec:
+  rules:
+  - host: user.afaforsakring.test
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: user
+          servicePort: http
+
+  # tls:
+  # - hosts:
+  #   - user.afaforsakring.test
+  #   secretName: user-afaforsakring-test-tls

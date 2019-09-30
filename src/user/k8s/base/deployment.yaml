@@ -1,0 +1,25 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: user
+
+spec:
+  replicas: 3
+
+  template:
+    spec:
+      containers:
+      - name: user
+        image: user:latest
+
+        ports:
+        - name: http
+          containerPort: 80
+
+        resources:
+          limits:
+            cpu: 4
+            memory: 2Gi
+          requests:
+            cpu: 200m
+            memory: 200Mi
